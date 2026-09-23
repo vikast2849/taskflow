@@ -1,0 +1,295 @@
+<%- include('../layouts/header', { extraCss: '/css/task4.css' }) %>
+<%- include('../layouts/navbar') %>
+
+<main class="py-4">
+  <div class="container container-xl">
+    <!-- Internship Task Header Badge -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <span class="badge bg-info-subtle text-info-emphasis border px-3 py-2 text-uppercase fw-bold letter-spacing-1">Cognifyz Level 2 : Task 4</span>
+          <span class="badge bg-light text-dark border">Intermediate</span>
+        </div>
+        <h1 class="h3 fw-bold mb-1">Complex Form Validation & Dynamic DOM Manipulation</h1>
+        <p class="text-muted mb-0">Modular client JavaScript, password complexity analyzer, real-time DOM mutations, and client-side hash routing.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="/tasks/task-3" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Task 3
+        </a>
+        <a href="/tasks/task-5" class="btn btn-sm btn-primary-tf">
+          Next: Task 5 <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Client-Side Routing Navigation Bar -->
+    <div class="card border-0 shadow-sm rounded-4 p-2 mb-4 bg-white">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <div class="d-flex flex-wrap gap-2">
+          <a href="#tasks" class="btn btn-sm t4-nav-btn active">
+            <i class="bi bi-kanban me-1"></i> Dynamic Task Board
+          </a>
+          <a href="#create" class="btn btn-sm t4-nav-btn">
+            <i class="bi bi-plus-circle me-1"></i> Add Task (DOM)
+          </a>
+          <a href="#register-demo" class="btn btn-sm t4-nav-btn">
+            <i class="bi bi-shield-lock me-1"></i> Complex Password Validator
+          </a>
+          <a href="#stats" class="btn btn-sm t4-nav-btn">
+            <i class="bi bi-pie-chart me-1"></i> Live DOM Statistics
+          </a>
+        </div>
+        <span class="badge bg-light text-secondary border px-3 py-2 small d-none d-md-inline-block">
+          <i class="bi bi-arrow-left-right me-1"></i> Hash-Based Client Routing
+        </span>
+      </div>
+    </div>
+
+    <!-- Live DOM Statistics Strip (Updated reactively on any DOM operation) -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
+          <span class="text-muted small">Total in DOM</span>
+          <div class="h3 fw-bold text-dark mb-0" id="domStatTotal">0</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
+          <span class="text-muted small">Pending</span>
+          <div class="h3 fw-bold text-secondary mb-0" id="domStatPending">0</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
+          <span class="text-muted small">In Progress</span>
+          <div class="h3 fw-bold text-primary mb-0" id="domStatInProgress">0</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
+          <span class="text-muted small">Completed</span>
+          <div class="h3 fw-bold text-success mb-0" id="domStatCompleted">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="spaMainContent">
+      <!-- ==================================================== -->
+      <!-- VIEW 1: DYNAMIC TASK BOARD (#tasks)                  -->
+      <!-- ==================================================== -->
+      <div id="viewTasks" class="t4-view active">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+          <!-- Search & Filter Controls -->
+          <div class="row g-3 align-items-center mb-4">
+            <div class="col-md-5">
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" id="domSearchInput" class="form-control border-start-0" placeholder="Search tasks dynamically...">
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="d-flex flex-wrap gap-2 justify-content-md-end">
+                <button class="btn btn-sm btn-filter-pill btn-primary active" data-filter="all">All Tasks</button>
+                <button class="btn btn-sm btn-filter-pill btn-outline-secondary" data-filter="pending">Pending</button>
+                <button class="btn btn-sm btn-filter-pill btn-outline-secondary" data-filter="in-progress">In Progress</button>
+                <button class="btn btn-sm btn-filter-pill btn-outline-secondary" data-filter="completed">Completed</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Tasks Container (Populated via TaskManager.js) -->
+          <div id="dynamicTaskGrid" class="row">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- VIEW 2: DYNAMIC TASK CREATOR (#create)               -->
+      <!-- ==================================================== -->
+      <div id="viewCreate" class="t4-view">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white max-w-700 mx-auto" style="max-width: 680px;">
+          <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
+            <div class="bg-primary text-white rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+              <i class="bi bi-plus-lg"></i>
+            </div>
+            <div>
+              <h2 class="h5 fw-bold mb-0">Dynamic DOM Task Insertion</h2>
+              <small class="text-muted">Adds directly to browser memory and live DOM tree without page reload</small>
+            </div>
+          </div>
+
+          <form id="dynamicTaskForm" novalidate>
+            <div class="mb-3">
+              <label for="dynTitle" class="form-label">Task Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="dynTitle" placeholder="e.g. Implement real-time WebSocket notifications" required>
+              <div id="dynTitleError" class="invalid-feedback"></div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="dynPriority" class="form-label">Priority <span class="text-danger">*</span></label>
+                <select class="form-select" id="dynPriority" required>
+                  <option value="">-- Choose Priority --</option>
+                  <option value="low">🟢 Low</option>
+                  <option value="medium">🟡 Medium</option>
+                  <option value="high">🟠 High</option>
+                  <option value="urgent">🔴 Urgent</option>
+                </select>
+                <div id="dynPriorityError" class="invalid-feedback"></div>
+              </div>
+              <div class="col-md-6">
+                <label for="dynDueDate" class="form-label">Due Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="dynDueDate" required>
+                <div id="dynDueDateError" class="invalid-feedback"></div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="dynDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="dynDescription" rows="3" placeholder="Additional details or implementation steps..."></textarea>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <a href="#tasks" class="btn btn-light px-4">Cancel</a>
+              <button type="submit" class="btn btn-primary-tf px-4">
+                <i class="bi bi-lightning-charge me-1"></i> Add to DOM
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- VIEW 3: COMPLEX REGISTRATION VALIDATOR (#register-demo)-->
+      <!-- ==================================================== -->
+      <div id="viewRegister" class="t4-view">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mx-auto" style="max-width: 680px;">
+          <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
+            <div class="bg-success text-white rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+              <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <div>
+              <h2 class="h5 fw-bold mb-0">Complex Registration Form Validation</h2>
+              <small class="text-muted">Live password strength analyzer, regex email validation & password confirmation</small>
+            </div>
+          </div>
+
+          <!-- Success Alert -->
+          <div id="regSuccessAlert" class="alert alert-success d-none d-flex align-items-center gap-2 rounded-3 mb-4">
+            <i class="bi bi-check-circle-fill fs-4"></i>
+            <div>
+              <strong>Validation Successful!</strong> All complex criteria, password strength guidelines, and matching checks passed!
+            </div>
+          </div>
+
+          <form id="complexRegisterForm" novalidate>
+            <!-- Email Field -->
+            <div class="mb-3">
+              <label for="regEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="regEmail" placeholder="user@example.com" required>
+              <div class="invalid-feedback">Please enter a valid email address (e.g. name@domain.com).</div>
+              <div class="valid-feedback">Email format valid.</div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="regPassword" class="form-label">Password <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" id="regPassword" placeholder="Create a strong password" required>
+              
+              <!-- Live Password Strength Meter Bar -->
+              <div class="strength-meter-container">
+                <div id="passwordMeterBar" class="strength-meter-bar"></div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <small id="passwordMeterLabel" class="fw-semibold text-muted">Enter password to test strength</small>
+                <small class="text-muted">Min 8 chars, mixed case, numbers & symbols</small>
+              </div>
+
+              <!-- Password Criteria Checklist -->
+              <div class="row g-2 mt-2 p-3 bg-light rounded-3">
+                <div class="col-sm-6">
+                  <div class="criteria-item" id="critLength">
+                    <i class="bi bi-dash-circle"></i> At least 8 characters
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="criteria-item" id="critUpper">
+                    <i class="bi bi-dash-circle"></i> Uppercase letter (A-Z)
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="criteria-item" id="critLower">
+                    <i class="bi bi-dash-circle"></i> Lowercase letter (a-z)
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="criteria-item" id="critNumber">
+                    <i class="bi bi-dash-circle"></i> Number (0-9)
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="criteria-item" id="critSpecial">
+                    <i class="bi bi-dash-circle"></i> Special character (!@#$%^&*)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="mb-4">
+              <label for="regConfirmPassword" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+              <input type="password" class="form-control" id="regConfirmPassword" placeholder="Re-enter password" required>
+              <div id="regConfirmError" class="invalid-feedback">Passwords do not match.</div>
+              <div class="valid-feedback">Passwords match!</div>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary-tf py-2">
+                <i class="bi bi-person-check-fill me-2"></i> Validate Registration Credentials
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- VIEW 4: LIVE DOM STATISTICS (#stats)                 -->
+      <!-- ==================================================== -->
+      <div id="viewStats" class="t4-view">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mx-auto" style="max-width: 680px;">
+          <h2 class="h5 fw-bold mb-3 text-dark">
+            <i class="bi bi-pie-chart-fill text-primary me-2"></i> Real-Time DOM Analytics
+          </h2>
+          <p class="text-muted small mb-4">These calculations re-evaluate reactively whenever tasks are added, completed, or deleted in the DOM tree.</p>
+
+          <div class="p-4 rounded-3 bg-light text-center mb-4">
+            <div class="display-5 fw-bold text-primary mb-1" id="domStatRate">0%</div>
+            <p class="text-muted small mb-0">Current Completion Velocity</p>
+          </div>
+
+          <ul class="list-group list-group-flush small">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Task Management Mode:</span>
+              <strong class="text-dark">Pure Client DOM (No Page Reload)</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Architecture Pattern:</span>
+              <strong class="text-dark">ES Modules (TaskManager + Router + Validation)</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Client Routing:</span>
+              <strong class="text-dark">Hash History API (<code>window.location.hash</code>)</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Load Task 4 ES Modules -->
+<script type="module" src="/js/task4/app.js"></script>
+
+<%- include('../layouts/footer') %>

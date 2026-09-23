@@ -1,0 +1,120 @@
+/* ==========================================================================
+   TaskFlow Task 4: Dynamic DOM & Complex Validation Styles
+   Cognifyz Technologies Full Stack Development Internship - Level 2 Task 4
+   ========================================================================== */
+
+/* Client-Side Routing Tab Views */
+.t4-view {
+  display: none;
+  animation: t4FadeIn 0.3s ease-in-out forwards;
+}
+
+.t4-view.active {
+  display: block;
+}
+
+@keyframes t4FadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Password Strength Meter */
+.strength-meter-container {
+  background-color: #E2E8F0;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.strength-meter-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-weak {
+  width: 30%;
+  background-color: #EF4444;
+}
+
+.strength-medium {
+  width: 65%;
+  background-color: #F59E0B;
+}
+
+.strength-strong {
+  width: 100%;
+  background-color: #10B981;
+}
+
+/* Password Criteria Checklist */
+.criteria-item {
+  font-size: 0.8rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 0.2s ease;
+}
+
+.criteria-item.met {
+  color: #10B981;
+  font-weight: 600;
+}
+
+.criteria-item.met i::before {
+  content: "\F272"; /* bi-check-circle-fill */
+}
+
+/* Dynamic Task DOM Cards */
+.dynamic-task-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 4px solid #4F46E5;
+}
+
+.dynamic-task-card.task-pending {
+  border-left-color: #64748B;
+}
+
+.dynamic-task-card.task-in-progress {
+  border-left-color: #3B82F6;
+}
+
+.dynamic-task-card.task-completed {
+  border-left-color: #10B981;
+  background-color: #F8FAFC;
+}
+
+.dynamic-task-card.task-completed .task-title-text {
+  text-decoration: line-through;
+  color: #94A3B8;
+}
+
+.card-deleting {
+  opacity: 0;
+  transform: scale(0.9) translateY(15px);
+}
+
+/* SPA Navigation Pills */
+.t4-nav-btn {
+  font-weight: 600;
+  color: #475569;
+  border-radius: 2rem;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.t4-nav-btn.active {
+  background-color: #4F46E5;
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}

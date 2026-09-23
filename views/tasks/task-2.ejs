@@ -1,0 +1,204 @@
+<%- include('../layouts/header', { extraJs: '/js/task2-validation.js' }) %>
+<%- include('../layouts/navbar') %>
+
+<main class="py-5">
+  <div class="container container-xl">
+    <!-- Internship Task Header Badge -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <span class="badge bg-primary px-3 py-2 text-uppercase fw-bold letter-spacing-1">Cognifyz Level 1 : Task 2</span>
+          <span class="badge bg-light text-dark border">Beginner</span>
+        </div>
+        <h1 class="h3 fw-bold mb-1">Inline Styles, Basic Interaction and Server-Side Validation</h1>
+        <p class="text-muted mb-0">Learn robust dual-layer validation (Client-side JavaScript + Express Server-side validation) and temporary in-memory persistence.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="/tasks/task-1" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Task 1
+        </a>
+        <a href="/tasks/task-3" class="btn btn-sm btn-primary-tf">
+          Next: Task 3 <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Client-Side Blocked Alert (Triggered via DOM JS) -->
+    <div id="clientValidationBanner" class="alert alert-danger d-none d-flex align-items-center gap-2 shadow-sm rounded-3 mb-4" role="alert">
+      <i class="bi bi-shield-x fs-4"></i>
+      <div>
+        <strong>Client Validation Blocked:</strong> Please correct all invalid or missing fields before the form can be sent to the Express server.
+      </div>
+    </div>
+
+    <!-- Server-Side Feedback Message -->
+    <% if (message) { %>
+      <div class="alert alert-<%= message.type %> alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm rounded-3 mb-4" role="alert">
+        <i class="bi <%= message.type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-octagon-fill' %> fs-5"></i>
+        <div><%= message.text %></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row g-4">
+      <!-- Left Column: Form with Dual Validation -->
+      <div class="col-lg-6">
+        <div class="tf-card p-4" style="border-top: 4px solid #4F46E5; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);">
+          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+            <div>
+              <h2 class="h5 fw-bold mb-0">Extended Task Form</h2>
+              <small class="text-muted">Includes Title, Description, Priority & Due Date</small>
+            </div>
+            <span class="badge" style="background-color: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE;">Dual Validation</span>
+          </div>
+
+          <!-- Form with novalidate to clearly test and demonstrate our custom client and server validation -->
+          <form id="task2Form" action="/tasks/task-2" method="POST" novalidate>
+            <!-- 1. Task Title Field -->
+            <div class="mb-3">
+              <label for="task2Title" class="form-label">Task Title <span class="text-danger">*</span></label>
+              <input 
+                type="text" 
+                class="form-control <%= errors && errors.title ? 'is-invalid' : '' %>" 
+                id="task2Title" 
+                name="title" 
+                placeholder="e.g. Implement API validation schema"
+                value="<%= formData && formData.title ? formData.title : '' %>"
+                required
+              >
+              <div id="titleClientError" class="invalid-feedback"></div>
+              <% if (errors && errors.title) { %>
+                <div class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1"></i>Server: <%= errors.title %></div>
+              <% } %>
+              <div class="form-text">Must be between 3 and 100 characters.</div>
+            </div>
+
+            <!-- 2. Priority Select Field -->
+            <div class="mb-3">
+              <label for="task2Priority" class="form-label">Priority Level <span class="text-danger">*</span></label>
+              <select class="form-select <%= errors && errors.priority ? 'is-invalid' : '' %>" id="task2Priority" name="priority" required>
+                <option value="">-- Select Priority --</option>
+                <option value="low" <%= formData && formData.priority === 'low' ? 'selected' : '' %>>🟢 Low Priority</option>
+                <option value="medium" <%= formData && formData.priority === 'medium' ? 'selected' : '' %>>🟡 Medium Priority</option>
+                <option value="high" <%= formData && formData.priority === 'high' ? 'selected' : '' %>>🟠 High Priority</option>
+                <option value="urgent" <%= formData && formData.priority === 'urgent' ? 'selected' : '' %>>🔴 Urgent Priority</option>
+              </select>
+              <div id="priorityClientError" class="invalid-feedback"></div>
+              <% if (errors && errors.priority) { %>
+                <div class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1"></i>Server: <%= errors.priority %></div>
+              <% } %>
+            </div>
+
+            <!-- 3. Due Date Field -->
+            <div class="mb-3">
+              <label for="task2DueDate" class="form-label">Due Date <span class="text-danger">*</span></label>
+              <input 
+                type="date" 
+                class="form-control <%= errors && errors.dueDate ? 'is-invalid' : '' %>" 
+                id="task2DueDate" 
+                name="dueDate"
+                value="<%= formData && formData.dueDate ? formData.dueDate : '' %>"
+                required
+              >
+              <div id="dueDateClientError" class="invalid-feedback"></div>
+              <% if (errors && errors.dueDate) { %>
+                <div class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1"></i>Server: <%= errors.dueDate %></div>
+              <% } %>
+              <div class="form-text">Cannot be set in the past.</div>
+            </div>
+
+            <!-- 4. Description Field -->
+            <div class="mb-4">
+              <label for="task2Description" class="form-label">Description (Optional)</label>
+              <textarea 
+                class="form-control <%= errors && errors.description ? 'is-invalid' : '' %>" 
+                id="task2Description" 
+                name="description" 
+                rows="3" 
+                placeholder="Provide additional details or execution guidelines..."
+              ><%= formData && formData.description ? formData.description : '' %></textarea>
+              <% if (errors && errors.description) { %>
+                <div class="invalid-feedback d-block"><i class="bi bi-exclamation-circle me-1"></i>Server: <%= errors.description %></div>
+              <% } %>
+              <div class="form-text">Maximum 500 characters.</div>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary-tf py-2" style="font-size: 0.95rem;">
+                <i class="bi bi-shield-check me-2"></i> Validate & Save to Server Storage
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Inline Styles & Educational Concept Card -->
+        <div class="card border-0 rounded-4 mt-4 p-4 shadow-sm" style="background: linear-gradient(145deg, #ffffff, #f8fafc); border-left: 5px solid #06B6D4 !important;">
+          <h3 class="h6 fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+            <i class="bi bi-code-square text-info"></i> Why Dual-Layer Validation Matters
+          </h3>
+          <p class="text-muted small mb-2">
+            <strong>Client-Side:</strong> Provides immediate visual feedback to the user, improving user experience and avoiding unnecessary server roundtrips.
+          </p>
+          <p class="text-muted small mb-0">
+            <strong>Server-Side:</strong> Enforces security and data integrity. Even if client JavaScript is disabled or bypassed via curl/Postman, the server unconditionally rejects malformed payloads with <code>400 Bad Request</code>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column: Temporary Server-Side Storage Table -->
+      <div class="col-lg-6">
+        <div class="tf-card p-4">
+          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+            <div>
+              <h2 class="h5 fw-bold mb-0">Temporary Server-Side Storage</h2>
+              <small class="text-muted">In-Memory store managed by Node.js process</small>
+            </div>
+            <span class="badge bg-success-subtle text-success border px-2 py-1">
+              <%= tasks ? tasks.length : 0 %> Stored
+            </span>
+          </div>
+
+          <% if (tasks && tasks.length > 0) { %>
+            <div class="d-flex flex-column gap-3">
+              <% tasks.forEach(function(item) { %>
+                <div class="card border p-3 rounded-3 shadow-sm position-relative" style="border-left: 4px solid <%= item.priority === 'urgent' ? '#EF4444' : item.priority === 'high' ? '#F59E0B' : item.priority === 'medium' ? '#3B82F6' : '#10B981' %> !important;">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <span class="badge bg-light text-dark border me-1"><%= item.id %></span>
+                      <!-- Inline Styled Priority Badges -->
+                      <% if (item.priority === 'urgent') { %>
+                        <span class="badge" style="background-color: #FEE2E2; color: #991B1B; font-weight: 600;">🔴 Urgent</span>
+                      <% } else if (item.priority === 'high') { %>
+                        <span class="badge" style="background-color: #FEF3C7; color: #92400E; font-weight: 600;">🟠 High</span>
+                      <% } else if (item.priority === 'medium') { %>
+                        <span class="badge" style="background-color: #DBEAFE; color: #1E40AF; font-weight: 600;">🟡 Medium</span>
+                      <% } else { %>
+                        <span class="badge" style="background-color: #DCFCE7; color: #166534; font-weight: 600;">🟢 Low</span>
+                      <% } %>
+                    </div>
+                    <span class="small text-muted">
+                      <i class="bi bi-calendar-event me-1"></i>Due: <%= item.dueDate %>
+                    </span>
+                  </div>
+                  <h3 class="h6 fw-bold text-dark mb-1"><%= item.title %></h3>
+                  <p class="text-muted small mb-2"><%= item.description %></p>
+                  <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                    <small class="text-muted"><i class="bi bi-clock-history me-1"></i><%= item.createdAt %></small>
+                    <span class="badge bg-success-subtle text-success small"><i class="bi bi-check2 me-1"></i>Validated</span>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-database-x fs-1 d-block mb-2 text-secondary opacity-50"></i>
+              <p class="mb-0">Temporary storage is currently empty.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../layouts/footer') %>

@@ -1,0 +1,310 @@
+<%- include('../layouts/header') %>
+<%- include('../layouts/navbar') %>
+
+<main class="py-4">
+  <div class="container container-xl">
+    <!-- Top Action & Greeting Banner -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+      <div>
+        <h1 class="h3 fw-bold mb-1 text-dark">Welcome back, <%= user.name %>!</h1>
+        <p class="text-muted mb-0 small">
+          <i class="bi bi-shield-check text-success me-1"></i> Secure session active • Personal Task Workspace
+        </p>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary-tf d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+          <i class="bi bi-plus-lg"></i>
+          <span>Create Task</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Feedback Message Alert -->
+    <% if (message) { %>
+      <div class="alert alert-<%= message.type %> alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm rounded-3 mb-4" role="alert">
+        <i class="bi <%= message.type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill' %> fs-5"></i>
+        <div><%= message.text %></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <!-- Statistics Metric Cards -->
+    <div class="row g-3 mb-4">
+      <!-- Total Tasks -->
+      <div class="col-6 col-md-3">
+        <div class="tf-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small fw-semibold">Total Tasks</span>
+            <div class="p-2 bg-primary-subtle text-primary rounded-3">
+              <i class="bi bi-kanban"></i>
+            </div>
+          </div>
+          <div class="h3 fw-bold text-dark mb-0"><%= stats.total %></div>
+          <small class="text-muted">MongoDB Persisted</small>
+        </div>
+      </div>
+
+      <!-- Pending Tasks -->
+      <div class="col-6 col-md-3">
+        <div class="tf-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small fw-semibold">Pending</span>
+            <div class="p-2 bg-secondary-subtle text-secondary rounded-3">
+              <i class="bi bi-clock-history"></i>
+            </div>
+          </div>
+          <div class="h3 fw-bold text-dark mb-0"><%= stats.pending %></div>
+          <small class="text-secondary">Awaiting start</small>
+        </div>
+      </div>
+
+      <!-- In Progress -->
+      <div class="col-6 col-md-3">
+        <div class="tf-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small fw-semibold">In Progress</span>
+            <div class="p-2 bg-info-subtle text-info-emphasis rounded-3">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+          </div>
+          <div class="h3 fw-bold text-primary mb-0"><%= stats.inProgress %></div>
+          <small class="text-primary">Underway</small>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div class="col-6 col-md-3">
+        <div class="tf-card p-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small fw-semibold">Completed</span>
+            <div class="p-2 bg-success-subtle text-success rounded-3">
+              <i class="bi bi-check2-circle"></i>
+            </div>
+          </div>
+          <div class="h3 fw-bold text-success mb-0"><%= stats.completed %></div>
+          <small class="text-success"><%= stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0 %>% completed</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search, Filter & Sort Toolbar -->
+    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-4">
+      <form action="/dashboard" method="GET" class="row g-2 align-items-center">
+        <!-- Search Input -->
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" class="form-control border-start-0" name="search" placeholder="Search tasks..." value="<%= filters.search %>">
+          </div>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="col-6 col-md-3">
+          <select class="form-select" name="status" onchange="this.form.submit()">
+            <option value="all" <%= filters.status === 'all' ? 'selected' : '' %>>All Statuses</option>
+            <option value="pending" <%= filters.status === 'pending' ? 'selected' : '' %>>Pending</option>
+            <option value="in-progress" <%= filters.status === 'in-progress' ? 'selected' : '' %>>In Progress</option>
+            <option value="completed" <%= filters.status === 'completed' ? 'selected' : '' %>>Completed</option>
+          </select>
+        </div>
+
+        <!-- Priority Filter -->
+        <div class="col-6 col-md-3">
+          <select class="form-select" name="priority" onchange="this.form.submit()">
+            <option value="all" <%= filters.priority === 'all' ? 'selected' : '' %>>All Priorities</option>
+            <option value="low" <%= filters.priority === 'low' ? 'selected' : '' %>>🟢 Low</option>
+            <option value="medium" <%= filters.priority === 'medium' ? 'selected' : '' %>>🟡 Medium</option>
+            <option value="high" <%= filters.priority === 'high' ? 'selected' : '' %>>🟠 High</option>
+            <option value="urgent" <%= filters.priority === 'urgent' ? 'selected' : '' %>>🔴 Urgent</option>
+          </select>
+        </div>
+
+        <!-- Sort -->
+        <div class="col-md-2 d-flex gap-2">
+          <select class="form-select" name="sort" onchange="this.form.submit()">
+            <option value="newest" <%= filters.sort === 'newest' ? 'selected' : '' %>>Newest First</option>
+            <option value="dueDate" <%= filters.sort === 'dueDate' ? 'selected' : '' %>>Due Date</option>
+            <option value="priority" <%= filters.sort === 'priority' ? 'selected' : '' %>>Priority</option>
+            <option value="title" <%= filters.sort === 'title' ? 'selected' : '' %>>Title (A-Z)</option>
+          </select>
+          <% if (filters.search || filters.status !== 'all' || filters.priority !== 'all' || filters.sort !== 'newest') { %>
+            <a href="/dashboard" class="btn btn-outline-secondary" title="Reset Filters"><i class="bi bi-x-lg"></i></a>
+          <% } %>
+        </div>
+      </form>
+    </div>
+
+    <!-- Task Cards Grid -->
+    <div class="row g-4">
+      <% if (tasks && tasks.length > 0) { %>
+        <% tasks.forEach(function(task) { %>
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="tf-card h-100 p-4 d-flex flex-column" style="border-left: 4px solid <%= task.priority === 'urgent' ? '#EF4444' : task.priority === 'high' ? '#F59E0B' : task.priority === 'medium' ? '#3B82F6' : '#10B981' %>;">
+              <!-- Card Top -->
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <span class="badge badge-priority-<%= task.priority %> text-capitalize me-1"><%= task.priority %></span>
+                  <span class="badge badge-status-<%= task.status %> text-capitalize"><%= task.status.replace('-', ' ') %></span>
+                </div>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-light border-0 py-0 px-2" data-bs-toggle="dropdown">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                    <li><h6 class="dropdown-header">Update Status</h6></li>
+                    <li>
+                      <form action="/dashboard/tasks/<%= task._id %>/status" method="POST">
+                        <input type="hidden" name="status" value="pending">
+                        <button type="submit" class="dropdown-item <%= task.status === 'pending' ? 'active' : '' %>">
+                          <i class="bi bi-clock me-2"></i>Pending
+                        </button>
+                      </form>
+                    </li>
+                    <li>
+                      <form action="/dashboard/tasks/<%= task._id %>/status" method="POST">
+                        <input type="hidden" name="status" value="in-progress">
+                        <button type="submit" class="dropdown-item <%= task.status === 'in-progress' ? 'active' : '' %>">
+                          <i class="bi bi-arrow-repeat me-2"></i>In Progress
+                        </button>
+                      </form>
+                    </li>
+                    <li>
+                      <form action="/dashboard/tasks/<%= task._id %>/status" method="POST">
+                        <input type="hidden" name="status" value="completed">
+                        <button type="submit" class="dropdown-item <%= task.status === 'completed' ? 'active' : '' %>">
+                          <i class="bi bi-check2-circle me-2 text-success"></i>Completed
+                        </button>
+                      </form>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <button class="dropdown-item text-danger" onclick="confirmDelete('<%= task._id %>', '<%= task.title.replace(/'/g, '\\\'') %>')">
+                        <i class="bi bi-trash3 me-2"></i>Delete Task
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- Title & Description -->
+              <h5 class="h6 fw-bold text-dark mb-1 <%= task.status === 'completed' ? 'text-decoration-line-through text-muted' : '' %>">
+                <%= task.title %>
+              </h5>
+              <p class="text-muted small mb-3 flex-grow-1"><%= task.description || 'No description provided.' %></p>
+
+              <!-- Footer info -->
+              <div class="d-flex justify-content-between align-items-center pt-3 border-top small text-muted">
+                <span>
+                  <i class="bi bi-calendar3 me-1"></i>Due <%= new Date(task.dueDate).toISOString().split('T')[0] %>
+                </span>
+                <span class="small text-secondary">
+                  <i class="bi bi-shield-lock me-1"></i>Private
+                </span>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <!-- Empty State -->
+        <div class="col-12">
+          <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white">
+            <i class="bi bi-folder2-open display-4 text-muted mb-3"></i>
+            <h3 class="h5 fw-bold text-dark">No tasks found</h3>
+            <p class="text-muted small mb-4" style="max-width: 400px; margin: 0 auto;">
+              <% if (filters.search || filters.status !== 'all' || filters.priority !== 'all') { %>
+                No tasks match your current filter or search criteria.
+              <% } else { %>
+                You haven't created any tasks yet! Start organizing your projects right now.
+              <% } %>
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+              <% if (filters.search || filters.status !== 'all' || filters.priority !== 'all') { %>
+                <a href="/dashboard" class="btn btn-sm btn-outline-secondary px-3">Clear Filters</a>
+              <% } %>
+              <button class="btn btn-sm btn-primary-tf px-3" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+                <i class="bi bi-plus-lg me-1"></i> Add Your First Task
+              </button>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<!-- Modal: Create Task -->
+<div class="modal fade" id="createTaskModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold">Create New Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form action="/dashboard/tasks" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="taskTitle" class="form-label">Task Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="taskTitle" name="title" placeholder="e.g. Complete quarterly analytics report" required minlength="3">
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-6">
+              <label for="taskPriority" class="form-label">Priority <span class="text-danger">*</span></label>
+              <select class="form-select" id="taskPriority" name="priority" required>
+                <option value="low">🟢 Low</option>
+                <option value="medium" selected>🟡 Medium</option>
+                <option value="high">🟠 High</option>
+                <option value="urgent">🔴 Urgent</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label for="taskDueDate" class="form-label">Due Date <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" id="taskDueDate" name="dueDate" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="taskDesc" class="form-label">Description (Optional)</label>
+            <textarea class="form-control" id="taskDesc" name="description" rows="3" placeholder="Context, criteria, and execution requirements..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 pt-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-tf">
+            <i class="bi bi-check-lg me-1"></i> Save to MongoDB
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Delete Confirmation -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content border-0 shadow-lg rounded-4 text-center p-3">
+      <div class="modal-body">
+        <div class="text-danger mb-3">
+          <i class="bi bi-exclamation-triangle fs-1"></i>
+        </div>
+        <h5 class="fw-bold mb-2">Delete Task?</h5>
+        <p class="text-muted small mb-4" id="deleteTaskTitleText">Are you sure you want to delete this task? This action cannot be undone.</p>
+        <form id="deleteTaskForm" method="POST" action="">
+          <div class="d-flex justify-content-center gap-2">
+            <button type="button" class="btn btn-light px-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger px-3">Delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function confirmDelete(id, title) {
+    document.getElementById('deleteTaskForm').action = '/dashboard/tasks/' + id + '/delete';
+    document.getElementById('deleteTaskTitleText').textContent = 'Are you sure you want to delete "' + title + '" from your database?';
+    const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    modal.show();
+  }
+</script>
+
+<%- include('../layouts/footer') %>

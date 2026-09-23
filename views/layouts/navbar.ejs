@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg navbar-taskflow sticky-top">
+  <div class="container-fluid container-xl">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+      <img src="/images/logo.svg" alt="TaskFlow Logo" width="32" height="32">
+      <span class="fw-bold text-dark fs-5 tracking-tight">TaskFlow</span>
+      <span class="brand-badge ms-1">Cognifyz</span>
+    </a>
+
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+        <li class="nav-item">
+          <a class="nav-link <%= typeof activeTab !== 'undefined' && activeTab === 'home' ? 'active text-primary fw-semibold' : '' %>" href="/">
+            <i class="bi bi-grid-fill me-1"></i> Showcase Hub
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle <%= typeof activeTab !== 'undefined' && activeTab.startsWith('task') ? 'active text-primary fw-semibold' : '' %>" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-stack me-1"></i> Internship Tasks
+          </a>
+          <ul class="dropdown-menu shadow-sm border-0 rounded-3">
+            <li><h6 class="dropdown-header text-uppercase fs-7 text-muted">Level 1: Beginner</h6></li>
+            <li><a class="dropdown-item" href="/tasks/task-1"><span class="badge bg-primary-subtle text-primary me-2">Task 1</span> HTML Forms & SSR</a></li>
+            <li><a class="dropdown-item" href="/tasks/task-2"><span class="badge bg-primary-subtle text-primary me-2">Task 2</span> Inline Styles & Validation</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><h6 class="dropdown-header text-uppercase fs-7 text-muted">Level 2: Intermediate</h6></li>
+            <li><a class="dropdown-item" href="/tasks/task-3"><span class="badge bg-info-subtle text-info-emphasis me-2">Task 3</span> Advanced CSS & Responsive</a></li>
+            <li><a class="dropdown-item" href="/tasks/task-4"><span class="badge bg-info-subtle text-info-emphasis me-2">Task 4</span> Dynamic DOM & Client SPA</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><h6 class="dropdown-header text-uppercase fs-7 text-muted">Level 3: Advanced</h6></li>
+            <li><a class="dropdown-item" href="/tasks/task-5"><span class="badge bg-warning-subtle text-warning-emphasis me-2">Task 5</span> REST API & Fetch()</a></li>
+            <li><a class="dropdown-item" href="/tasks/task-6"><span class="badge bg-success-subtle text-success-emphasis me-2">Task 6</span> MongoDB & Authentication</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= typeof activeTab !== 'undefined' && activeTab === 'dashboard' ? 'active text-primary fw-semibold' : '' %>" href="/dashboard">
+            <i class="bi bi-speedometer2 me-1"></i> Production Dashboard
+          </a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <% if (typeof user !== 'undefined' && user) { %>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2 rounded-pill px-3" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle text-primary"></i>
+              <span class="fw-medium"><%= user.name %></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+              <li class="dropdown-item-text text-muted small"><%= user.email %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/dashboard"><i class="bi bi-kanban me-2"></i>My Tasks</a></li>
+              <li><a class="dropdown-item text-danger" href="/auth/logout"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a></li>
+            </ul>
+          </div>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Sign In</a>
+          <a href="/auth/register" class="btn btn-sm btn-primary-tf rounded-pill px-3">Get Started</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

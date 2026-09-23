@@ -1,0 +1,84 @@
+<%- include('../layouts/header') %>
+<%- include('../layouts/navbar') %>
+
+<main class="py-5 d-flex align-items-center flex-grow-1">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-5">
+        <div class="tf-card p-4 p-md-5">
+          <!-- Form Header -->
+          <div class="text-center mb-4">
+            <img src="/images/logo.svg" alt="TaskFlow" width="48" height="48" class="mb-2">
+            <h1 class="h4 fw-bold text-dark">Welcome to TaskFlow</h1>
+            <p class="text-muted small mb-0">Sign in with your account to access your personal dashboard</p>
+          </div>
+
+          <!-- Alert Message -->
+          <% if (message) { %>
+            <div class="alert alert-<%= message.type %> alert-dismissible fade show d-flex align-items-center gap-2 rounded-3 small mb-3">
+              <i class="bi bi-info-circle-fill"></i>
+              <div><%= message.text %></div>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          <% } %>
+
+          <!-- Login Form -->
+          <form action="/auth/login" method="POST">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email Address</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
+                <input 
+                  type="email" 
+                  class="form-control border-start-0" 
+                  id="loginEmail" 
+                  name="email" 
+                  placeholder="name@example.com" 
+                  value="<%= formData && formData.email ? formData.email : '' %>"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <label for="loginPassword" class="form-label mb-0">Password</label>
+              </div>
+              <div class="input-group mt-1">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+                <input 
+                  type="password" 
+                  class="form-control border-start-0" 
+                  id="loginPassword" 
+                  name="password" 
+                  placeholder="••••••••" 
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary-tf py-2">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Sign In to Account
+              </button>
+            </div>
+          </form>
+
+          <div class="text-center mt-4 pt-3 border-top">
+            <p class="small text-muted mb-0">
+              Don't have an account yet? 
+              <a href="/auth/register" class="fw-semibold text-primary text-decoration-none">Create an Account</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Demo Accounts Helper -->
+        <div class="card border-0 bg-light p-3 rounded-4 mt-3 text-center small text-muted">
+          <span><i class="bi bi-shield-check text-success me-1"></i> Passwords secured with 10-round bcrypt hashing.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../layouts/footer') %>

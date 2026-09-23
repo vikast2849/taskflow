@@ -1,0 +1,144 @@
+<%- include('../layouts/header') %>
+<%- include('../layouts/navbar') %>
+
+<main class="py-5">
+  <div class="container container-xl">
+    <!-- Internship Task Header Badge -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <span class="badge bg-primary px-3 py-2 text-uppercase fw-bold letter-spacing-1">Cognifyz Level 1 : Task 1</span>
+          <span class="badge bg-light text-dark border">Beginner</span>
+        </div>
+        <h1 class="h3 fw-bold mb-1">HTML Structure and Basic Server Interaction</h1>
+        <p class="text-muted mb-0">Learn the foundations of form submission, Express routing, and dynamic Server-Side Rendering (SSR) using EJS.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="/" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Back to Hub
+        </a>
+        <a href="/tasks/task-2" class="btn btn-sm btn-primary-tf">
+          Next: Task 2 <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Alert / Feedback Message -->
+    <% if (message) { %>
+      <div class="alert alert-<%= message.type %> alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm rounded-3 mb-4" role="alert">
+        <i class="bi <%= message.type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill' %> fs-5"></i>
+        <div><%= message.text %></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row g-4">
+      <!-- Left Column: Form Section -->
+      <div class="col-lg-6">
+        <div class="tf-card p-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="bg-primary text-white rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+              <i class="bi bi-plus-lg"></i>
+            </div>
+            <div>
+              <h2 class="h5 fw-bold mb-0">Basic Task Creation Form</h2>
+              <small class="text-muted">Submits directly to the Express server using HTTP POST</small>
+            </div>
+          </div>
+
+          <!-- The HTML Task Submission Form -->
+          <form action="/tasks/task-1" method="POST">
+            <div class="mb-3">
+              <label for="taskTitle" class="form-label">Task Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="taskTitle" name="title" placeholder="e.g. Design homepage wireframes" required>
+              <div class="form-text">Sent to server via <code>req.body.title</code>.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="taskDescription" class="form-label">Task Description</label>
+              <textarea class="form-control" id="taskDescription" name="description" rows="3" placeholder="Provide context or instructions for this task..."></textarea>
+              <div class="form-text">Sent to server via <code>req.body.description</code>.</div>
+            </div>
+
+            <div class="d-grid pt-2">
+              <button type="submit" class="btn btn-primary-tf py-2">
+                <i class="bi bi-send-fill me-2"></i> Submit Task to Server
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Architecture Concept Explanation Box -->
+        <div class="card bg-light border-0 rounded-4 mt-4 p-4 shadow-sm">
+          <h3 class="h6 fw-bold text-dark d-flex align-items-center gap-2">
+            <i class="bi bi-lightbulb-fill text-warning"></i> How This Task Works
+          </h3>
+          <ul class="text-muted small ps-3 mb-0 space-y-1">
+            <li><strong>HTML Form:</strong> Encodes input data with <code>application/x-www-form-urlencoded</code> and sends a <code>POST</code> request.</li>
+            <li><strong>Express Endpoint:</strong> <code>server/controllers/task1Controller.js</code> parses payload through <code>express.urlencoded()</code>.</li>
+            <li><strong>EJS Rendering:</strong> Express passes the extracted task data to this EJS template, which generates dynamic HTML before sending it to the browser.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Column: Dynamic EJS Display Section -->
+      <div class="col-lg-6">
+        <!-- Submitted Task Display (Server-Side Rendered) -->
+        <div class="tf-card p-4 mb-4">
+          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+            <h2 class="h5 fw-bold mb-0">
+              <i class="bi bi-server text-primary me-2"></i> Server-Side Rendered Output
+            </h2>
+            <span class="badge bg-primary-subtle text-primary">Live EJS</span>
+          </div>
+
+          <% if (submittedTask) { %>
+            <div class="card border-primary border-2 bg-primary-subtle bg-opacity-10 p-3 rounded-3 mb-3">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="badge bg-primary"><%= submittedTask.id %> (Just Submitted)</span>
+                <small class="text-muted"><i class="bi bi-clock me-1"></i><%= submittedTask.createdAt %></small>
+              </div>
+              <h3 class="h5 fw-bold text-dark mb-1"><%= submittedTask.title %></h3>
+              <p class="text-secondary mb-0"><%= submittedTask.description %></p>
+            </div>
+            <p class="text-success small mb-0"><i class="bi bi-check2-all me-1"></i> Data successfully parsed by Express and injected into the DOM via EJS tag <code>&lt;%= submittedTask.title %&gt;</code>.</p>
+          <% } else { %>
+            <div class="text-center py-4 text-muted">
+              <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary opacity-50"></i>
+              <p class="mb-0">No task submitted yet. Fill the form on the left and submit to view server-rendered output!</p>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Cumulative Task List (All tasks submitted in current session) -->
+        <div class="tf-card p-4">
+          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+            <h2 class="h6 fw-bold mb-0 text-dark">
+              <i class="bi bi-list-task text-secondary me-2"></i> Task 1 History (<%= tasks ? tasks.length : 0 %>)
+            </h2>
+            <small class="text-muted">In-Memory Server State</small>
+          </div>
+
+          <% if (tasks && tasks.length > 0) { %>
+            <div class="list-group list-group-flush">
+              <% tasks.forEach(function(item) { %>
+                <div class="list-group-item px-0 py-3 border-bottom">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold text-dark"><%= item.title %></span>
+                    <span class="badge bg-light text-dark border"><%= item.id %></span>
+                  </div>
+                  <p class="text-muted small mb-1"><%= item.description %></p>
+                  <small class="text-muted"><i class="bi bi-clock me-1"></i><%= item.createdAt %></small>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p class="text-muted small text-center mb-0">No task history recorded yet.</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../layouts/footer') %>

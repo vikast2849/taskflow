@@ -1,0 +1,220 @@
+<%- include('../layouts/header', { extraCss: '/css/task3.css' }) %>
+<%- include('../layouts/navbar') %>
+
+<main class="py-4">
+  <div class="container container-xl">
+    <!-- Section 1: Internship Level Header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <span class="badge bg-info-subtle text-info-emphasis border px-3 py-2 text-uppercase fw-bold letter-spacing-1">Cognifyz Level 2 : Task 3</span>
+          <span class="badge bg-light text-dark border">Intermediate</span>
+        </div>
+        <h1 class="h3 fw-bold mb-1">Advanced CSS Styling and Responsive Design</h1>
+        <p class="text-muted mb-0">Production-grade multi-section dashboard with CSS Grid, Flexbox, glassmorphism, animations, and Bootstrap 5 responsive breakpoints.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="/tasks/task-2" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Task 2
+        </a>
+        <a href="/tasks/task-4" class="btn btn-sm btn-primary-tf">
+          Next: Task 4 <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 2: Hero / Dashboard Overview Section -->
+    <section class="t3-hero mb-5">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-10 border border-white border-opacity-20 mb-3">
+            <span class="badge bg-info text-dark fw-bold">Live CSS Showcase</span>
+            <small class="text-white-80">Transitions • Keyframes • Modern Responsive Grid</small>
+          </div>
+          <h2 class="display-6 fw-bold mb-3 text-white">Engineering Sprint Dashboard</h2>
+          <p class="lead text-white-75 mb-4" style="font-size: 1.1rem; max-width: 650px;">
+            Streamlined project oversight engineered with CSS custom properties, fluid typography, accessible visual hierarchy, and high-performance GPU-accelerated micro-interactions.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#task-grid" class="btn btn-light px-4 py-2 fw-semibold text-dark shadow-sm">
+              <i class="bi bi-card-heading me-2 text-primary"></i> Explore Task Cards
+            </a>
+            <a href="#stats-section" class="btn btn-outline-light px-4 py-2">
+              <i class="bi bi-bar-chart-line me-2"></i> View Performance Stats
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block">
+          <div class="p-4 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 backdrop-blur text-center shadow-lg">
+            <div class="display-5 fw-bold text-white mb-1"><%= Math.round((stats.completed / stats.total) * 100) %>%</div>
+            <p class="text-white-75 small mb-3">Overall Sprint Velocity</p>
+            <div class="progress bg-white bg-opacity-20" style="height: 8px;">
+              <div class="progress-bar bg-info" role="progressbar" style="width: <%= Math.round((stats.completed / stats.total) * 100) %>%;"></div>
+            </div>
+            <div class="d-flex justify-content-between text-white-50 small mt-2">
+              <span><%= stats.completed %> Completed</span>
+              <span><%= stats.total - stats.completed %> Remaining</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Task Statistics Section -->
+    <section id="stats-section" class="mb-5">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="h5 fw-bold mb-0 text-dark">
+          <i class="bi bi-graph-up-arrow text-primary me-2"></i> Key Task Metrics
+        </h3>
+        <span class="text-muted small">Real-time Calculated Overview</span>
+      </div>
+
+      <div class="row g-3 g-md-4">
+        <!-- Stat 1: Total Tasks -->
+        <div class="col-6 col-md-3">
+          <div class="t3-stat-card" style="--stat-color: #4F46E5; --stat-light: #EEF2FF;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="text-muted small fw-semibold">Total Tasks</span>
+              <div class="t3-stat-icon">
+                <i class="bi bi-kanban"></i>
+              </div>
+            </div>
+            <div class="h2 fw-bold text-dark mb-0"><%= stats.total %></div>
+            <small class="text-muted"><i class="bi bi-arrow-up-short text-success"></i>All active backlogs</small>
+          </div>
+        </div>
+
+        <!-- Stat 2: In Progress -->
+        <div class="col-6 col-md-3">
+          <div class="t3-stat-card" style="--stat-color: #3B82F6; --stat-light: #EFF6FF;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="text-muted small fw-semibold">In Progress</span>
+              <div class="t3-stat-icon">
+                <i class="bi bi-hourglass-split"></i>
+              </div>
+            </div>
+            <div class="h2 fw-bold text-dark mb-0"><%= stats.inProgress %></div>
+            <small class="text-primary"><i class="bi bi-activity"></i> Active execution</small>
+          </div>
+        </div>
+
+        <!-- Stat 3: Completed -->
+        <div class="col-6 col-md-3">
+          <div class="t3-stat-card" style="--stat-color: #10B981; --stat-light: #ECFDF5;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="text-muted small fw-semibold">Completed</span>
+              <div class="t3-stat-icon">
+                <i class="bi bi-check2-circle"></i>
+              </div>
+            </div>
+            <div class="h2 fw-bold text-dark mb-0"><%= stats.completed %></div>
+            <small class="text-success"><i class="bi bi-check-all"></i> Verified & shipped</small>
+          </div>
+        </div>
+
+        <!-- Stat 4: High & Urgent -->
+        <div class="col-6 col-md-3">
+          <div class="t3-stat-card" style="--stat-color: #EF4444; --stat-light: #FEF2F2;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="text-muted small fw-semibold">High / Urgent</span>
+              <div class="t3-stat-icon">
+                <i class="bi bi-fire"></i>
+              </div>
+            </div>
+            <div class="h2 fw-bold text-dark mb-0"><%= stats.urgentOrHigh %></div>
+            <small class="text-danger"><i class="bi bi-exclamation-triangle"></i> Requires focus</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Task Cards Responsive Grid Section -->
+    <section id="task-grid" class="mb-5">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+          <h3 class="h5 fw-bold mb-1 text-dark">
+            <i class="bi bi-collection text-primary me-2"></i> Responsive Task Cards Grid
+          </h3>
+          <p class="text-muted small mb-0">Adapts smoothly across 1 column (Mobile), 2 columns (Tablet), and 3 columns (Desktop).</p>
+        </div>
+        <div class="d-flex gap-2">
+          <span class="badge bg-light text-secondary border px-3 py-2">
+            <i class="bi bi-layout-three-columns me-1"></i>CSS Grid / Bootstrap 5
+          </span>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <% tasks.forEach(function(task) { %>
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="t3-task-card h-100">
+              <!-- Card Top: Category & Priority Badge -->
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-light text-muted border px-2 py-1"><%= task.category %></span>
+                <% if (task.priority === 'urgent') { %>
+                  <span class="t3-priority-badge t3-priority-urgent"><i class="bi bi-lightning-fill"></i> Urgent</span>
+                <% } else if (task.priority === 'high') { %>
+                  <span class="t3-priority-badge t3-priority-high"><i class="bi bi-arrow-up-circle-fill"></i> High</span>
+                <% } else if (task.priority === 'medium') { %>
+                  <span class="t3-priority-badge t3-priority-medium"><i class="bi bi-dash-circle-fill"></i> Medium</span>
+                <% } else { %>
+                  <span class="t3-priority-badge t3-priority-low"><i class="bi bi-check-circle-fill"></i> Low</span>
+                <% } %>
+              </div>
+
+              <!-- Card Body -->
+              <h4 class="h6 fw-bold text-dark mb-2"><%= task.title %></h4>
+              <p class="text-muted small mb-3 flex-grow-1"><%= task.description %></p>
+
+              <!-- Progress Indicator -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center small text-muted mb-1">
+                  <span>Progress</span>
+                  <span class="fw-semibold text-dark"><%= task.progress %>%</span>
+                </div>
+                <div class="t3-progress-track">
+                  <div class="t3-progress-fill" style="width: <%= task.progress %>%;"></div>
+                </div>
+              </div>
+
+              <!-- Card Bottom: Assignees & Due Date -->
+              <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                <div class="t3-avatar-group">
+                  <% task.assignees.forEach(function(initials) { %>
+                    <span class="t3-avatar" title="Assignee <%= initials %>"><%= initials %></span>
+                  <% }); %>
+                </div>
+                <div class="small text-muted">
+                  <i class="bi bi-calendar3 me-1"></i>Due <%= task.dueDate %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+
+    <!-- Architecture & CSS Implementation Highlights Callout -->
+    <div class="card border-0 rounded-4 p-4 shadow-sm" style="background: linear-gradient(135deg, #F8FAFC, #F1F5F9); border-left: 5px solid #4F46E5 !important;">
+      <h3 class="h6 fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+        <i class="bi bi-check-circle-fill text-success"></i> Cognifyz Level 2 Task 3 Implementation Checklist
+      </h3>
+      <div class="row g-3 small text-muted">
+        <div class="col-md-4">
+          <strong><i class="bi bi-check-lg text-primary me-1"></i> Multi-Section Layout:</strong>
+          Navbar, Hero, Statistics Cards, Task Cards Grid, and Footer.
+        </div>
+        <div class="col-md-4">
+          <strong><i class="bi bi-check-lg text-primary me-1"></i> Advanced CSS:</strong>
+          Custom CSS variables, glassmorphism, hover lift transitions, keyframe glow animations.
+        </div>
+        <div class="col-md-4">
+          <strong><i class="bi bi-check-lg text-primary me-1"></i> Responsive Design:</strong>
+          Bootstrap 5 responsive flex/grid with fluid typography and breakpoints for Mobile, Tablet, and Desktop.
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../layouts/footer') %>

@@ -1,0 +1,172 @@
+<%- include('layouts/header') %>
+<%- include('layouts/navbar') %>
+
+<main class="py-5">
+  <div class="container container-xl">
+    <!-- Hero Banner -->
+    <div class="p-5 mb-5 rounded-4 position-relative overflow-hidden" style="background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%); color: white;">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white bg-opacity-10 border border-white border-opacity-20 mb-3">
+            <span class="badge bg-success">Cognifyz Technologies</span>
+            <small class="text-white">Full Stack Web Development Internship (Tasks 1–6)</small>
+          </div>
+          <h1 class="display-5 fw-bold mb-3">TaskFlow – Full Stack Task Management System</h1>
+          <p class="lead text-white-50 mb-4">
+            A complete, production-grade web application built progressively across Level 1 (Beginner), Level 2 (Intermediate), and Level 3 (Advanced). Explore each standalone task demonstration or test the unified production dashboard.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="/dashboard" class="btn btn-light btn-lg px-4 fw-semibold text-primary">
+              <i class="bi bi-speedometer2 me-2"></i> Launch Production Dashboard
+            </a>
+            <a href="/tasks/task-1" class="btn btn-outline-light btn-lg px-4">
+              <i class="bi bi-play-circle me-2"></i> Explore Task 1
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 text-center mt-4 mt-lg-0 d-none d-lg-block">
+          <div class="p-4 rounded-4 bg-white bg-opacity-10 backdrop-blur border border-white border-opacity-10 shadow-lg">
+            <i class="bi bi-layers-fill fs-1 text-info mb-2 d-block"></i>
+            <h4 class="fw-bold mb-1">6/6 Tasks Built</h4>
+            <p class="small text-white-70 mb-0">EJS • Express • REST API • MongoDB • bcrypt • Bootstrap 5</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progressive Tasks Grid -->
+    <div class="mb-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+          <h2 class="h4 fw-bold mb-1">Internship Task Showcase Directory</h2>
+          <p class="text-muted small mb-0">Direct access to individual level implementations as required by Cognifyz guidelines</p>
+        </div>
+        <span class="badge bg-primary-subtle text-primary border px-3 py-2">6 Modules Implemented</span>
+      </div>
+
+      <div class="row g-4">
+        <!-- Level 1 Task 1 -->
+        <div class="col-md-6 col-xl-4">
+          <div class="tf-card h-100 p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-primary-subtle text-primary">Level 1 : Beginner</span>
+              <span class="badge bg-secondary-subtle text-secondary">Task 1</span>
+            </div>
+            <h3 class="h5 fw-bold text-dark mb-2">HTML Structure & Basic Server Interaction</h3>
+            <p class="text-muted small flex-grow-1">
+              Demonstrates HTML form submissions, Express routing, body parsing, and Server-Side Rendering (SSR) using EJS templates.
+            </p>
+            <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+              <span class="text-muted small"><i class="bi bi-filetype-html me-1"></i>EJS + Express</span>
+              <a href="/tasks/task-1" class="btn btn-sm btn-primary-tf">
+                Launch Task 1 <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level 1 Task 2 -->
+        <div class="col-md-6 col-xl-4">
+          <div class="tf-card h-100 p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-primary-subtle text-primary">Level 1 : Beginner</span>
+              <span class="badge bg-secondary-subtle text-secondary">Task 2</span>
+            </div>
+            <h3 class="h5 fw-bold text-dark mb-2">Inline Styles & Server-Side Validation</h3>
+            <p class="text-muted small flex-grow-1">
+              Extended form inputs with client-side JavaScript validation, Express server-side validation rules, and temporary in-memory state.
+            </p>
+            <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+              <span class="text-muted small"><i class="bi bi-shield-check me-1"></i>Dual Validation</span>
+              <a href="/tasks/task-2" class="btn btn-sm btn-primary-tf">
+                Launch Task 2 <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level 2 Task 3 -->
+        <div class="col-md-6 col-xl-4">
+          <div class="tf-card h-100 p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-info-subtle text-info-emphasis">Level 2 : Intermediate</span>
+              <span class="badge bg-secondary-subtle text-secondary">Task 3</span>
+            </div>
+            <h3 class="h5 fw-bold text-dark mb-2">Advanced CSS & Responsive Layout</h3>
+            <p class="text-muted small flex-grow-1">
+              Professional multi-section dashboard with modern CSS variables, glassmorphism, hover transitions, subtle animations, and Bootstrap 5.
+            </p>
+            <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+              <span class="text-muted small"><i class="bi bi-phone me-1"></i>Desktop • Tablet • Mobile</span>
+              <a href="/tasks/task-3" class="btn btn-sm btn-primary-tf">
+                Launch Task 3 <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level 2 Task 4 -->
+        <div class="col-md-6 col-xl-4">
+          <div class="tf-card h-100 p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-info-subtle text-info-emphasis">Level 2 : Intermediate</span>
+              <span class="badge bg-secondary-subtle text-secondary">Task 4</span>
+            </div>
+            <h3 class="h5 fw-bold text-dark mb-2">Dynamic DOM & Complex Validation SPA</h3>
+            <p class="text-muted small flex-grow-1">
+              Live password strength analyzer, regex validation, client-side routing, and real-time DOM task operations (filter, search, stats).
+            </p>
+            <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+              <span class="text-muted small"><i class="bi bi-lightning-charge me-1"></i>Modular JS SPA</span>
+              <a href="/tasks/task-4" class="btn btn-sm btn-primary-tf">
+                Launch Task 4 <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level 3 Task 5 -->
+        <div class="col-md-6 col-xl-4">
+          <div class="tf-card h-100 p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-warning-subtle text-warning-emphasis">Level 3 : Advanced</span>
+              <span class="badge bg-secondary-subtle text-secondary">Task 5</span>
+            </div>
+            <h3 class="h5 fw-bold text-dark mb-2">RESTful API & Frontend Fetch() Interaction</h3>
+            <p class="text-muted small flex-grow-1">
+              Full CRUD RESTful API with HTTP status codes (200, 201, 400, 404), JSON responses, fetch() client, and loading/error states.
+            </p>
+            <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+              <span class="text-muted small"><i class="bi bi-cloud-arrow-up me-1"></i>Fetch API + JSON</span>
+              <a href="/tasks/task-5" class="btn btn-sm btn-primary-tf">
+                Launch Task 5 <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Level 3 Task 6 -->
+        <div class="col-md-6 col-xl-4">
+          <div class="tf-card h-100 p-4 d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <span class="badge bg-success-subtle text-success-emphasis">Level 3 : Advanced</span>
+              <span class="badge bg-secondary-subtle text-secondary">Task 6</span>
+            </div>
+            <h3 class="h5 fw-bold text-dark mb-2">MongoDB & User Authentication</h3>
+            <p class="text-muted small flex-grow-1">
+              Persistent storage with Mongoose schemas, bcrypt password hashing, session/JWT auth, protected endpoints, and user-level authorization.
+            </p>
+            <div class="pt-3 border-top d-flex align-items-center justify-content-between">
+              <span class="text-muted small"><i class="bi bi-shield-lock me-1"></i>MongoDB + bcrypt</span>
+              <a href="/tasks/task-6" class="btn btn-sm btn-primary-tf">
+                Launch Task 6 <i class="bi bi-arrow-right ms-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('layouts/footer') %>

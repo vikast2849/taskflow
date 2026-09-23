@@ -1,0 +1,35 @@
+<footer class="footer-taskflow mt-auto">
+  <div class="container container-xl">
+    <div class="row align-items-center gy-3">
+      <div class="col-md-6 text-center text-md-start">
+        <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-1">
+          <img src="/images/logo.svg" alt="TaskFlow" width="22" height="22">
+          <span class="fw-bold text-dark">TaskFlow</span>
+          <span class="text-muted small">| Full Stack Task Management System</span>
+        </div>
+        <p class="text-muted small mb-0">Cognifyz Technologies Full Stack Development Internship Project (Tasks 1–6)</p>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <div class="d-flex align-items-center justify-content-center justify-content-md-end gap-3 small text-muted">
+          <a href="/tasks/task-1" class="text-decoration-none text-muted">Tasks 1–2 (L1)</a>
+          <span>•</span>
+          <a href="/tasks/task-3" class="text-decoration-none text-muted">Tasks 3–4 (L2)</a>
+          <span>•</span>
+          <a href="/tasks/task-5" class="text-decoration-none text-muted">Tasks 5–6 (L3)</a>
+          <span>•</span>
+          <a href="/dashboard" class="text-decoration-none text-primary fw-semibold">Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Additional Page-Specific JS -->
+<% if (typeof extraJs !== 'undefined') { %>
+  <script src="<%= extraJs %>"></script>
+<% } %>
+</body>
+</html>
