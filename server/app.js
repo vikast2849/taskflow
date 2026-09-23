@@ -23,6 +23,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Trust reverse proxy for cloud deployments (e.g. Render, Railway, Vercel)
+app.set('trust proxy', 1);
+
 // Session Middleware (for authentication and temporary server session state)
 app.use(
   session({
@@ -31,7 +34,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: 'auto',
       maxAge: 1000 * 60 * 60 * 24 // 24 hours
     }
   })
